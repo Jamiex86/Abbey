@@ -5,160 +5,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Products</title>
   <script src="https://js.stripe.com/v3/"></script>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-   <!-- Navigation -->
-   <nav>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="products.html">Purchase Logs</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="deliveries.html">Deliveries</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="terms.html">Terms</a></li>
-    </ul>
-</nav>
 
-  <h1>Products</h1>
-
-  <!-- Kiln Dried Ash Logs -->
-  <div class="product">
-    <img src="https://yourwebsite.com/ash-logs.jpg" alt="Kiln Dried Ash Logs – 1 x Barrow Bag" width="300">
-    <h2>Kiln Dried Ash Logs – 1 x Barrow Bag</h2>
-    <p>£70.00</p>
-    <button onclick="addToBasket('logs', 'Kiln Dried Ash Logs – 1 x Barrow Bag', 7000)">Add to Basket</button>
-  </div>
-
-  <!-- Kindling Net -->
-  <div class="product">
-    <img src="https://yourwebsite.com/kindling-net.jpg" alt="Kindling Net" width="300">
-    <h2>Kindling Net</h2>
-    <p>£4.50</p>
-    <button onclick="addToBasket('kindling', 'Kindling Net', 450)">Add to Basket</button>
-  </div>
-
-  <!-- Stack Logs Option -->
-  <div class="product">
-    <img src="https://yourwebsite.com/stack-logs.jpg" alt="Stack Logs" width="300">
-    <h2>Stack Logs</h2>
-    <p>£10.00</p>
-    <button onclick="addToBasket('stack_logs', 'Stack Logs', 1000)">Add to Basket</button>
-  </div>
-
-  <h2>Your Basket</h2>
-  <div id="basket">
-    <p>No items in your basket</p>
-  </div>
-  <h3>Total: £<span id="total">0.00</span></h3>
-  <button id="checkout-button" onclick="checkout()" disabled>Checkout</button>
-
-  <footer>
-    <div class="footer-container">
-      <div class="footer-column">
-        <h3>Contact Information</h3>
-        <p>Abbey Logs</p>
-        <p>Brakes Coppice Farm, Telham Lane</p>
-        <p>Battle, East Sussex, TN33 0SJ</p>
-        <p>Phone: 01424 830347</p>
-        <p>Email: <a href="mailto:sales@abbey-logs.co.uk">sales@abbey-logs.co.uk</a></p>
-      </div>
-      <div class="footer-column">
-        <h3>Useful Links</h3>
-        <ul>
-          <li><a href="/shop.html">Shop</a></li>
-          <li><a href="/deliveries.html">Deliveries</a></li>
-          <li><a href="/privacy.html">Privacy</a></li>
-          <li><a href="/terms.html">Terms</a></li>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Abbey Logs</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="products.html">Purchase Logs</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="deliveries.html">Deliveries</a></li>
+          <li class="nav-item"><a class="nav-link" href="privacy.html">Privacy</a></li>
+          <li class="nav-item"><a class="nav-link" href="terms.html">Terms</a></li>
         </ul>
       </div>
-      <div class="footer-column">
-        <h3>Follow Us</h3>
-        <div class="social-icons">
-          <a href="#"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
-          <a href="#"><img src="path/to/twitter-icon.png" alt="Twitter"></a>
-          <a href="#"><img src="path/to/instagram-icon.png" alt="Instagram"></a>
+    </div>
+  </nav>
+
+  <!-- Product Section -->
+  <div class="container my-5">
+    <h1 class="text-center mb-4">Products</h1>
+
+    <div class="row">
+      <!-- Kiln Dried Ash Logs -->
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://yourwebsite.com/ash-logs.jpg" class="card-img-top" alt="Kiln Dried Ash Logs – 1 x Barrow Bag">
+          <div class="card-body">
+            <h5 class="card-title">Kiln Dried Ash Logs – 1 x Barrow Bag</h5>
+            <p class="card-text">£70.00</p>
+            <button class="btn btn-primary" onclick="addToBasket('logs', 'Kiln Dried Ash Logs – 1 x Barrow Bag', 7000)">Add to Basket</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kindling Net -->
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://yourwebsite.com/kindling-net.jpg" class="card-img-top" alt="Kindling Net">
+          <div class="card-body">
+            <h5 class="card-title">Kindling Net</h5>
+            <p class="card-text">£4.50</p>
+            <button class="btn btn-primary" onclick="addToBasket('kindling', 'Kindling Net', 450)">Add to Basket</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stack Logs -->
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://yourwebsite.com/stack-logs.jpg" class="card-img-top" alt="Stack Logs">
+          <div class="card-body">
+            <h5 class="card-title">Stack Logs</h5>
+            <p class="card-text">£10.00</p>
+            <button class="btn btn-primary" onclick="addToBasket('stack_logs', 'Stack Logs', 1000)">Add to Basket</button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="footer-bottom">
+
+    <!-- Basket Section -->
+    <h2 class="text-center mt-5">Your Basket</h2>
+    <div id="basket" class="text-center">
+      <p>No items in your basket</p>
+    </div>
+    <h3 class="text-center mt-3">Total: £<span id="total">0.00</span></h3>
+    <div class="text-center">
+      <button id="checkout-button" class="btn btn-warning" onclick="checkout()" disabled>Checkout</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-light py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>Contact Information</h5>
+          <p>Abbey Logs, Brakes Coppice Farm, Telham Lane, Battle, East Sussex, TN33 0SJ</p>
+          <p>Phone: 01424 830347</p>
+          <p>Email: <a href="mailto:sales@abbey-logs.co.uk" class="text-light">sales@abbey-logs.co.uk</a></p>
+        </div>
+        <div class="col-md-4">
+          <h5>Useful Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="products.html" class="text-light">Shop</a></li>
+            <li><a href="deliveries.html" class="text-light">Deliveries</a></li>
+            <li><a href="privacy.html" class="text-light">Privacy</a></li>
+            <li><a href="terms.html" class="text-light">Terms</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Follow Us</h5>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-light"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="text-light"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="text-light"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-3">
       <p>&copy; 2024 Abbey Logs | VAT NUMBER: 680 0461 54</p>
     </div>
   </footer>
-  
 
   <!-- Popup Warning -->
-  <div id="popup-warning" style="display:none;">
+  <div id="popup-warning" class="text-center" style="display:none;">
     <p>Please note that unless "Stack Logs" is added to your basket, logs will not be stacked. Would you like to continue without stacking?</p>
-    <button onclick="proceedToCheckout()">Yes, Proceed</button>
-    <button onclick="closePopup()">No, Add Stack Logs</button>
+    <button class="btn btn-primary" onclick="proceedToCheckout()">Yes, Proceed</button>
+    <button class="btn btn-secondary" onclick="closePopup()">No, Add Stack Logs</button>
   </div>
 
-  <script>
-    let basket = [];
-    let totalAmount = 0;
-
-    // Function to add products to the basket
-    function addToBasket(productId, productName, productPrice) {
-      basket.push({ productId, productName, productPrice });
-      totalAmount += productPrice;
-      updateBasket();
-    }
-
-    // Function to remove a product from the basket
-    function removeFromBasket(index) {
-      totalAmount -= basket[index].productPrice;
-      basket.splice(index, 1);
-      updateBasket();
-    }
-
-    // Function to update the basket UI
-    function updateBasket() {
-      const basketDiv = document.getElementById('basket');
-      const totalSpan = document.getElementById('total');
-      const checkoutButton = document.getElementById('checkout-button');
-
-      basketDiv.innerHTML = '';
-      basket.forEach((item, index) => {
-        basketDiv.innerHTML += `<p>${item.productName} - £${(item.productPrice / 100).toFixed(2)} <button onclick="removeFromBasket(${index})">Remove</button></p>`;
-      });
-
-      totalSpan.innerText = (totalAmount / 100).toFixed(2);
-      checkoutButton.disabled = basket.length === 0;
-    }
-
-    // Function to show popup warning before checkout
-    function checkout() {
-      const hasStackLogs = basket.some(item => item.productId === 'stack_logs');
-      if (!hasStackLogs) {
-        document.getElementById('popup-warning').style.display = 'block';
-      } else {
-        proceedToCheckout();
-      }
-    }
-
-    // Function to proceed to checkout
-    function proceedToCheckout() {
-      document.getElementById('popup-warning').style.display = 'none';
-      fetch('/create-checkout-session', {
-        method: 'POST',
-        body: JSON.stringify(basket),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(session => {
-        const stripe = Stripe('pk_test_51Q4J4CGKNAA22AV8p1pxR1qQy3plxKPqmTH00Vq7qf2vNxJZMOAwCoGbGuYGwIWim90LEwKYWdRCpqrU4BD8zaNN008FQd4fyh');
-        stripe.redirectToCheckout({ sessionId: session.id });
-      })
-      .catch(error => console.error('Error:', error));
-    }
-
-    // Function to close the popup without proceeding
-    function closePopup() {
-      document.getElementById('popup-warning').style.display = 'none';
-    }
-  </script>
+  <!-- JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
