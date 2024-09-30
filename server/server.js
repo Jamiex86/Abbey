@@ -14,6 +14,7 @@ app.use(express.static('public'));
 app.post('/create-checkout-session', async (req, res) => {
     const basket = req.body;
   
+    // Create an array of line items for the basket
     const line_items = basket.map(item => {
       let productName;
       let productPrice;
@@ -27,6 +28,10 @@ app.post('/create-checkout-session', async (req, res) => {
         productName = 'Kindling Net';
         productPrice = 450; // £4.50 in pence
         productImage = 'https://yourwebsite.com/kindling-net.jpg';
+      } else if (item.productId === 'stack_logs') {
+        productName = 'Stack Logs';
+        productPrice = 1000; // £10.00 in pence
+        productImage = 'https://yourwebsite.com/stack-logs.jpg';
       }
   
       return {
@@ -42,15 +47,20 @@ app.post('/create-checkout-session', async (req, res) => {
       };
     });
   
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items,
-      mode: 'payment',
-      success_url: `${req.headers.origin}/success.html`,
-      cancel_url: `${req.headers.origin}/`,
-    });
+    try {
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items, // Send line items array to Stripe
+        mode: 'payment',
+        success_url: `${req.headers.origin}/success.html`,
+        cancel_url: `${req.headers.origin}/`,
+      });
   
-    res.json({ id: session.id });
+      res.json({ id: session.id });
+    } catch (error) {
+      console.error("Error creating Stripe session:", error);
+      res.status(500).json({ error: 'Failed to create session' });
+    }
   });
   
 

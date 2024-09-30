@@ -8,12 +8,17 @@
   <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-  <nav>
+   <!-- Navigation -->
+   <nav>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Purchase Logs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="deliveries.html">Deliveries</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
     </ul>
-  </nav>
+</nav>
 
   <h1>Products</h1>
 
@@ -33,12 +38,51 @@
     <button onclick="addToBasket('kindling', 'Kindling Net', 450)">Add to Basket</button>
   </div>
 
+  <!-- Stack Logs Option -->
+  <div class="product">
+    <img src="https://yourwebsite.com/stack-logs.jpg" alt="Stack Logs" width="300">
+    <h2>Stack Logs</h2>
+    <p>£10.00</p>
+    <button onclick="addToBasket('stack_logs', 'Stack Logs', 1000)">Add to Basket</button>
+  </div>
+
   <h2>Your Basket</h2>
   <div id="basket">
     <p>No items in your basket</p>
   </div>
   <h3>Total: £<span id="total">0.00</span></h3>
   <button id="checkout-button" onclick="checkout()" disabled>Checkout</button>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="footer-content">
+        <h2>Contact Us</h2>
+        <p>Abbey Logs<br>
+        Brakes Coppice Farm,<br>
+        Telham Lane,<br>
+        Battle,<br>
+        East Sussex.<br>
+        TN33 0SJ</p>
+        <p>01424 830347<br>
+        <a href="mailto:sales@abbey-logs.co.uk">sales@abbey-logs.co.uk</a></p>
+    </div>
+    <div class="footer-links">
+        <h2>Useful Links</h2>
+        <ul>
+            <li><a href="products.html">Shop</a></li>
+            <li><a href="deliveries.html">Deliveries</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+        </ul>
+    </div>
+</footer>
+
+  <!-- Popup Warning -->
+  <div id="popup-warning" style="display:none;">
+    <p>Please note that unless "Stack Logs" is added to your basket, logs will not be stacked. Would you like to continue without stacking?</p>
+    <button onclick="proceedToCheckout()">Yes, Proceed</button>
+    <button onclick="closePopup()">No, Add Stack Logs</button>
+  </div>
 
   <script>
     let basket = [];
@@ -51,6 +95,13 @@
       updateBasket();
     }
 
+    // Function to remove a product from the basket
+    function removeFromBasket(index) {
+      totalAmount -= basket[index].productPrice;
+      basket.splice(index, 1);
+      updateBasket();
+    }
+
     // Function to update the basket UI
     function updateBasket() {
       const basketDiv = document.getElementById('basket');
@@ -58,16 +109,27 @@
       const checkoutButton = document.getElementById('checkout-button');
 
       basketDiv.innerHTML = '';
-      basket.forEach(item => {
-        basketDiv.innerHTML += `<p>${item.productName} - £${(item.productPrice / 100).toFixed(2)}</p>`;
+      basket.forEach((item, index) => {
+        basketDiv.innerHTML += `<p>${item.productName} - £${(item.productPrice / 100).toFixed(2)} <button onclick="removeFromBasket(${index})">Remove</button></p>`;
       });
 
       totalSpan.innerText = (totalAmount / 100).toFixed(2);
       checkoutButton.disabled = basket.length === 0;
     }
 
-    // Function to initiate checkout
+    // Function to show popup warning before checkout
     function checkout() {
+      const hasStackLogs = basket.some(item => item.productId === 'stack_logs');
+      if (!hasStackLogs) {
+        document.getElementById('popup-warning').style.display = 'block';
+      } else {
+        proceedToCheckout();
+      }
+    }
+
+    // Function to proceed to checkout
+    function proceedToCheckout() {
+      document.getElementById('popup-warning').style.display = 'none';
       fetch('/create-checkout-session', {
         method: 'POST',
         body: JSON.stringify(basket),
@@ -81,6 +143,11 @@
         stripe.redirectToCheckout({ sessionId: session.id });
       })
       .catch(error => console.error('Error:', error));
+    }
+
+    // Function to close the popup without proceeding
+    function closePopup() {
+      document.getElementById('popup-warning').style.display = 'none';
     }
   </script>
 </body>
