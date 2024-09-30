@@ -1,0 +1,106 @@
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Navigation */
+nav {
+    background-color: #333;
+    color: white;
+    padding: 15px 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #f5f5f5; /* Light grey background */
+    padding: 50px 20px; /* Add padding */
+    text-align: center; /* Center the text */
+    margin-bottom: 20px; /* Space below the hero section */
+}
+
+.hero h1 {
+    font-size: 2.5em; /* Large font size */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+/* Product and Content Sections */
+.products, .privacy-policy, .terms-conditions, .delivery, .contact {
+    padding: 20px;
+    margin: 20px; /* Space around content sections */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #fff; /* White background */
+}
+
+/* Buttons */
+.btn {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding around the text */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    text-decoration: none; /* Remove underline for links */
+}
+
+.btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Footer Section */
+footer {
+    background-color: #333; /* Dark background */
+    color: white; /* White text */
+    padding: 20px; /* Add padding */
+    text-align: center; /* Center the text */
+    margin-top: 20px; /* Space above the footer */
+}
+
+.footer-content, .footer-links {
+    margin: 20px 0; /* Space around footer sections */
+}
+
+.footer-links ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+.footer-links li {
+    margin: 10px 0; /* Space between links */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column; /* Stack navigation items on small screens */
+        align-items: center; /* Center align items */
+    }
+
+    .hero h1 {
+        font-size: 2em; /* Smaller font size for mobile */
+    }
+}

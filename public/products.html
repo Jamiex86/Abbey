@@ -1,39 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Products</title>
-  <script src="https://js.stripe.com/v3/"></script>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/style.css">
+    <title>Purchase Logs</title>
 </head>
 <body>
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-    </ul>
-  </nav>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Purchase Logs</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="deliveries.html">Deliveries</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+        </ul>
+    </nav>
 
-  <h1>Products</h1>
-  <div class="product">
-    <img src="https://yourwebsite.com/logs.jpg" alt="Kiln Dried Logs" width="300">
-    <h2>Kiln Dried Logs</h2>
-    <p>$50.00</p>
-    <button id="checkout-button">Buy Now</button>
-  </div>
+    <!-- Product Section -->
+    <section class="products">
+        <h1>Available Logs</h1>
+        <!-- Single Product -->
+        <div class="product">
+            <h2>Log Type 1</h2>
+            <p>Description of log type 1.</p>
+            <label for="quantity1">Quantity:</label>
+            <select id="quantity1">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <button id="checkout-button" class="btn">Checkout</button>
+        </div>
+    </section>
 
-  <script>
-    const stripe = Stripe('pk_test_51Q4J4CGKNAA22AV8p1pxR1qQy3plxKPqmTH00Vq7qf2vNxJZMOAwCoGbGuYGwIWim90LEwKYWdRCpqrU4BD8zaNN008FQd4fyh');
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <h2>Contact Us</h2>
+            <p>Abbey Logs<br>
+            Brakes Coppice Farm,<br>
+            Telham Lane,<br>
+            Battle,<br>
+            East Sussex.<br>
+            TN33 0SJ</p>
+            <p>01424 830347<br>
+            <a href="mailto:sales@abbey-logs.co.uk">sales@abbey-logs.co.uk</a></p>
+        </div>
+        <div class="footer-links">
+            <h2>Useful Links</h2>
+            <ul>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="deliveries.html">Deliveries</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+                <li><a href="terms.html">Terms</a></li>
+            </ul>
+        </div>
+    </footer>
 
-    document.getElementById('checkout-button').addEventListener('click', () => {
-      fetch('/create-checkout-session', {
-        method: 'POST',
-      })
-      .then(response => response.json())
-      .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
-      .catch(error => console.error('Error:', error));
-    });
-  </script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        const stripe = Stripe('pk_test_51Q4J4CGKNAA22AV8p1pxR1qQy3plxKPqmTH00Vq7qf2vNxJZMOAwCoGbGuYGwIWim90LEwKYWdRCpqrU4BD8zaNN008FQd4fyh');
+
+        document.getElementById('checkout-button').addEventListener('click', () => {
+            fetch('/create-checkout-session', {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+  
 </body>
 </html>
