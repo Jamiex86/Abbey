@@ -12,41 +12,39 @@ app.use(express.static('public'));
 
 // Create checkout session
 app.post('/create-checkout-session', async (req, res) => {
-    const { product } = req.body;
+    const basket = req.body;
   
-    let price;
-    let productName;
-    let productImage;
+    const line_items = basket.map(item => {
+      let productName;
+      let productPrice;
+      let productImage;
   
-    if (product === 'logs') {
-      // Kiln Dried Ash Logs – 1 x Barrow Bag
-      price = 7000; // £70.00 in pence
-      productName = 'Kiln Dried Ash Logs – 1 x Barrow Bag';
-      productImage = 'https://yourwebsite.com/ash-logs.jpg';
-    } else if (product === 'kindling') {
-      // Kindling Net
-      price = 450; // £4.50 in pence
-      productName = 'Kindling Net';
-      productImage = 'https://yourwebsite.com/kindling-net.jpg';
-    } else {
-      return res.status(400).send('Product not found');
-    }
+      if (item.productId === 'logs') {
+        productName = 'Kiln Dried Ash Logs – 1 x Barrow Bag';
+        productPrice = 7000; // £70.00 in pence
+        productImage = 'https://yourwebsite.com/ash-logs.jpg';
+      } else if (item.productId === 'kindling') {
+        productName = 'Kindling Net';
+        productPrice = 450; // £4.50 in pence
+        productImage = 'https://yourwebsite.com/kindling-net.jpg';
+      }
+  
+      return {
+        price_data: {
+          currency: 'gbp',
+          product_data: {
+            name: productName,
+            images: [productImage],
+          },
+          unit_amount: productPrice,
+        },
+        quantity: 1,
+      };
+    });
   
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'gbp',
-            product_data: {
-              name: productName,
-              images: [productImage],
-            },
-            unit_amount: price,
-          },
-          quantity: 1,
-        },
-      ],
+      line_items,
       mode: 'payment',
       success_url: `${req.headers.origin}/success.html`,
       cancel_url: `${req.headers.origin}/`,

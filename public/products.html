@@ -1,31 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/style.css">
-    <title>Purchase Logs</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="products.html">Purchase Logs</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="deliveries.html">Deliveries</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
-            <li><a href="terms.html">Terms</a></li>
-        </ul>
-    </nav>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+    </ul>
+  </nav>
 
-      <!-- Kiln Dried Ash Logs -->
-       <section>
+  <h1>Products</h1>
+
+  <!-- Kiln Dried Ash Logs -->
   <div class="product">
     <img src="https://yourwebsite.com/ash-logs.jpg" alt="Kiln Dried Ash Logs – 1 x Barrow Bag" width="300">
     <h2>Kiln Dried Ash Logs – 1 x Barrow Bag</h2>
     <p>£70.00</p>
-    <button id="checkout-button-logs">Buy Kiln Dried Ash Logs</button>
+    <button onclick="addToBasket('logs', 'Kiln Dried Ash Logs – 1 x Barrow Bag', 7000)">Add to Basket</button>
   </div>
 
   <!-- Kindling Net -->
@@ -33,64 +30,58 @@
     <img src="https://yourwebsite.com/kindling-net.jpg" alt="Kindling Net" width="300">
     <h2>Kindling Net</h2>
     <p>£4.50</p>
-    <button id="checkout-button-kindling">Buy Kindling Net</button>
+    <button onclick="addToBasket('kindling', 'Kindling Net', 450)">Add to Basket</button>
   </div>
-</section>
 
-    <!-- Footer Section -->
-    <footer>
-        <div class="footer-content">
-            <h2>Contact Us</h2>
-            <p>Abbey Logs<br>
-            Brakes Coppice Farm,<br>
-            Telham Lane,<br>
-            Battle,<br>
-            East Sussex.<br>
-            TN33 0SJ</p>
-            <p>01424 830347<br>
-            <a href="mailto:sales@abbey-logs.co.uk">sales@abbey-logs.co.uk</a></p>
-        </div>
-        <div class="footer-links">
-            <h2>Useful Links</h2>
-            <ul>
-                <li><a href="products.html">Shop</a></li>
-                <li><a href="deliveries.html">Deliveries</a></li>
-                <li><a href="privacy.html">Privacy</a></li>
-                <li><a href="terms.html">Terms</a></li>
-            </ul>
-        </div>
-    </footer>
+  <h2>Your Basket</h2>
+  <div id="basket">
+    <p>No items in your basket</p>
+  </div>
+  <h3>Total: £<span id="total">0.00</span></h3>
+  <button id="checkout-button" onclick="checkout()" disabled>Checkout</button>
 
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
+  <script>
+    let basket = [];
+    let totalAmount = 0;
+
+    // Function to add products to the basket
+    function addToBasket(productId, productName, productPrice) {
+      basket.push({ productId, productName, productPrice });
+      totalAmount += productPrice;
+      updateBasket();
+    }
+
+    // Function to update the basket UI
+    function updateBasket() {
+      const basketDiv = document.getElementById('basket');
+      const totalSpan = document.getElementById('total');
+      const checkoutButton = document.getElementById('checkout-button');
+
+      basketDiv.innerHTML = '';
+      basket.forEach(item => {
+        basketDiv.innerHTML += `<p>${item.productName} - £${(item.productPrice / 100).toFixed(2)}</p>`;
+      });
+
+      totalSpan.innerText = (totalAmount / 100).toFixed(2);
+      checkoutButton.disabled = basket.length === 0;
+    }
+
+    // Function to initiate checkout
+    function checkout() {
+      fetch('/create-checkout-session', {
+        method: 'POST',
+        body: JSON.stringify(basket),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(session => {
         const stripe = Stripe('pk_test_51Q4J4CGKNAA22AV8p1pxR1qQy3plxKPqmTH00Vq7qf2vNxJZMOAwCoGbGuYGwIWim90LEwKYWdRCpqrU4BD8zaNN008FQd4fyh');
-
-        document.getElementById('checkout-button-logs').addEventListener('click', () => {
-      fetch('/create-checkout-session', {
-        method: 'POST',
-        body: JSON.stringify({ product: 'logs' }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        stripe.redirectToCheckout({ sessionId: session.id });
       })
-      .then(response => response.json())
-      .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
       .catch(error => console.error('Error:', error));
-    });
-
-    document.getElementById('checkout-button-kindling').addEventListener('click', () => {
-      fetch('/create-checkout-session', {
-        method: 'POST',
-        body: JSON.stringify({ product: 'kindling' }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
-      .catch(error => console.error('Error:', error));
-    });
-    </script>
-  
+    }
+  </script>
 </body>
 </html>
