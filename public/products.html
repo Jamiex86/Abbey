@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+    </ul>
+  </nav>
+
+  <h1>Products</h1>
+  <div class="product">
+    <img src="https://yourwebsite.com/logs.jpg" alt="Kiln Dried Logs" width="300">
+    <h2>Kiln Dried Logs</h2>
+    <p>$50.00</p>
+    <button id="checkout-button">Buy Now</button>
+  </div>
+
+  <script>
+    const stripe = Stripe('pk_test_51Q4J4CGKNAA22AV8p1pxR1qQy3plxKPqmTH00Vq7qf2vNxJZMOAwCoGbGuYGwIWim90LEwKYWdRCpqrU4BD8zaNN008FQd4fyh');
+
+    document.getElementById('checkout-button').addEventListener('click', () => {
+      fetch('/create-checkout-session', {
+        method: 'POST',
+      })
+      .then(response => response.json())
+      .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>
